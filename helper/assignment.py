@@ -43,23 +43,31 @@ class Person:
     def hasBoughtForPreviously(self, other: Person) -> bool:
         return other.key() in self.already_on_prev_keys
 
-    def timeSinceBoughtForPreviously(self, other: Person) -> int:
+    def yearsBoughtFor(self, other: Person) -> int:
         assert self.hasBoughtForPreviously(other), f"Expected to have bought for {other.getFullName()} previously"
-        return this_year - self.already_on_prev_year[self.already_on_prev_keys.index(other.key())]
+        years = []
+        for i in range(len(self.already_on_prev_keys)):
+            if self.already_on_prev_keys[i] == other.key():
+                years.append(self.already_on_prev_year[i])
+
+        return years
 
     def isBuyingFor(self, other: Person) -> bool:
         return other.key() in self.already_on_this_keys
 
 
 class AssignmentParams:
-    def __init__(self, years_of_not_repeating: int) -> None:
-        self.cost_cant_be_on = 1000
+    def __init__(self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year) -> None:
+        self.cost_cant_be_on = 10000
         self.cost_of_assignment = 1
+        self.cost_of_double_assignment = 100
         self.years_of_not_repeating = years_of_not_repeating
+        self.this_year = this_year
 
-    def costForYearShift(self, year_previous: int) -> float:
-        assert year_previous > 0, "Expected year_previous to be positive"
-        return self.cost_of_assignment * math.exp(- year_previous / self.years_of_not_repeating)
+    def costForYearAssignment(self, year_previous: int) -> float:
+        assert year_previous < self.this_year, f"Expected year_previous ({year_previous}) to be less than this year ({self.this_year})"
+        delta = self.this_year - year_previous
+        return self.cost_of_double_assignment * math.exp(- delta / self.years_of_not_repeating)
 
 
 def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray:
@@ -77,7 +85,9 @@ def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray
                 c += params.cost_of_assignment
 
             if person_i.hasBoughtForPreviously(person_j):
-                c += params.costForYearShift(person_i.timeSinceBoughtForPreviously(person_j))
+                years = person_i.yearsBoughtFor(person_j)
+                for year in years:
+                    c += params.costForYearAssignment(year)
             cost_matrix[i, j] = c
     return cost_matrix
 
