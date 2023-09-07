@@ -84,6 +84,7 @@
         function createAllocation() {
             var allocation = [];
             let people = [];
+            var table = document.getElementById("names");
             for (i = 1; i < table.rows.length; i++) {
                 var personA = table.rows[i].cells[0].innerHTML;
                 people.push(personA);
@@ -97,14 +98,18 @@
             allocation.push({
                 "count": count
             });
+            let rules = [];
             for (i = 1; i < table.rows.length; i++) {
                 var personA = table.rows[i].cells[0].innerHTML;
                 var personB = table.rows[i].cells[1].innerHTML;
-                allocation.push({
+                rules.push({
                     "personA": personA,
                     "personB": personB
                 });
             }
+            allocation.push({
+                "rules": rules
+            });
             $.ajax({
                 type: "POST",
                 url: '/create',
