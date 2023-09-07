@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Divi | Split Your Load</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Rubik:wght@300&display=swap"
+          rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-family: 'Rubik', sans-serif;
+        }
+    </style>
+    <script type="text/javascript">
+        function getAddedNameValue() {
+            var x = document.getElementById("frm1");
+            var text = "";
+            var i;
+            for (i = 0; i < x.length; i++) {
+                text += x.elements[i].value;
+            }
+            // Get the table element in which you want to add row
+            let table = document.getElementById("names");
+
+            // Create a row using the inserRow() method and
+            // specify the index where you want to add the row
+            let row = table.insertRow(-1); // We are adding at the end
+
+            // Create table cells
+            let c1 = row.insertCell(0);
+            c1.innerText = text;
+
+            // Add the data as rule options
+            var buyer = document.getElementById("buyer");
+            var buyee = document.getElementById("buyee");
+            var opt = document.createElement('option');
+            opt.value = text;
+            opt.innerHTML = text;
+            buyer.appendChild(opt);
+            var opt = document.createElement('option');
+            opt.value = text;
+            opt.innerHTML = text;
+            buyee.appendChild(opt);
+
+            // Reset the form
+            document.getElementById("frm1").reset();
+            ``
+        }
+
+        function addRule() {
+            var x = document.getElementById("frm3");
+            var personA = x.elements[0].value;
+            var personB = x.elements[1].value;
+            if (personB === personA) {
+                alert("You can't buy for yourself!");
+                // Reset the form
+                document.getElementById("frm3").reset();
+                return;
+            }
+            // Get the table element in which you want to add row
+            let table = document.getElementById("rules");
+
+            // Create a row using the inserRow() method and
+            // specify the index where you want to add the row
+            let row = table.insertRow(-1); // We are adding at the end
+
+            // Create table cells
+            let c1 = row.insertCell(0);
+            c1.innerText = personA;
+            let c2 = row.insertCell(1);
+            c2.innerText = personB;
+
+            // Reset the form
+            document.getElementById("frm3").reset();
+        }
+
+        function createAllocation() {
+            var allocation = [];
+            var table = document.getElementById("rules");
+            var i;
+            var count = document.getElementById("number_to_buy").value;
+            allocation.push({
+                "count": count
+            });
+            for (i = 1; i < table.rows.length; i++) {
+                var personA = table.rows[i].cells[0].innerHTML;
+                var personB = table.rows[i].cells[1].innerHTML;
+                allocation.push({
+                    "personA": personA,
+                    "personB": personB
+                });
+            }
+            $.ajax({
+                type: "POST",
+                url: '/create',
+                async: false,
+                data: JSON.stringify(allocation),
+                contentType: "application/json",
+                success: function (data) {
+                    window.location.href = "/allocation";
+                }, fail: function () {
+
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<h1 style="text-align: center">Divi</h1>
+<form id="frm2">
+    <label for="number_to_buy">How many people should each person buy for?</label>
+    <input type="number" id="number_to_buy" name="number_to_buy">
+</form>
+<form id="frm1">
+    <label for="name_to_by_for">Who are you buying for?</label>
+    <input type="text" id="name_to_by_for" name="name_to_buy_for">
+</form>
+<button onclick="getAddedNameValue()">Add new person!</button>
+<table id="names">
+    <tr>
+        <th>Name</th>
+    </tr>
+</table>
+<form id="frm3">
+    <p>Add a rule in the format Person A bought for Person B!</p>
+    <label for="buyer">Person A: </label>
+    <select id="buyer" name="buyer">
+        <option value="">--Please choose an option--</option>
+    </select>
+    <label for="buyee">Person B: </label>
+    <select id="buyee" name="buyee">
+        <option value="">--Please choose an option--</option>
+    </select>
+</form>
+<button onclick="addRule()">Add a new rule!</button>
+<table id="rules">
+    <tr>
+        <th>Person A</th>
+        <th>Person B</th>
+    </tr>
+</table>
+
+<button onclick="createAllocation()">Create Allocation</button>
+</body>
+</html>
