@@ -86,7 +86,7 @@ def assignPeople(people: List[Person], params: AssignmentParams) ->  List[Person
     cost_matrix = formCostMatrix(people, params)
     raise Exception("LAPJV is not installed")
     # Run Hungarian algorithm
-    row_ind, col_ind, _ = lapjv.lapjv(cost_matrix)
+    row_ind, col_ind, _ = [] #lapjv.lapjv(cost_matrix)
     for row in row_ind:
         person = people[row]
         for col in col_ind:
