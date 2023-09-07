@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import math
 from typing import List
-from __future__ import annotations
 import numpy as np
 # import lapjv
 import datetime
@@ -62,11 +63,11 @@ class AssignmentParams:
 
 
 def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray:
-    np = len(people)
-    cost_matrix = np.zeros((np, np))
-    for i in range(np):
+    num_people = len(people)
+    cost_matrix = np.zeros((num_people, num_people))
+    for i in range(num_people):
         person_i = people[i]
-        for j in range(np):
+        for j in range(num_people):
             c = 0
             person_j = people[j]
             if person_i == person_j:
