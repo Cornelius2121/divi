@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Allocation</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Person A</th>
+            <th>Person B</th>
+        </tr>
+        {% for i in allocations %}
+        <tr>
+            <td>{{ i[0] }}</td>
+            <td>{{ i[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
