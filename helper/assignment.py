@@ -6,8 +6,6 @@ import numpy as np
 import scipy
 import datetime
 
-this_year = datetime.datetime.now().year
-
 
 class Person:
     def __init__(self, first_name: str, last_name: str) -> None:
@@ -28,12 +26,14 @@ class Person:
     def addPersonThatCantBeOn(self, other: Person) -> None:
         self.keys_that_cant_be_on.append(other.key())
 
+
+
     def addPersonToBeOn(self, other: Person) -> None:
-        assert other is not self, "Expected other to not be self"
+        assert other is not self, f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_this_keys.append(other.key())
 
     def addPersonHasBeenOn(self, other: Person, year: int) -> None:
-        assert other is not self, "Expected other to not be self"
+        assert other is not self, f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_prev_keys.append(other.key())
         self.already_on_prev_year.append(year)
 
@@ -55,6 +55,8 @@ class Person:
     def isBuyingFor(self, other: Person) -> bool:
         return other.key() in self.already_on_this_keys
 
+    def cannotBuyFor(self, other: Person) -> bool:
+        return other.key() in self.keys_that_cant_be_on
 
     def __repr__(self) -> str:
         out =  f"{self.getFullName()}"
@@ -85,7 +87,7 @@ def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray
         for j in range(num_people):
             c = 0
             person_j = people[j]
-            if person_i == person_j:
+            if person_i.cannotBuyFor(person_j) or person_j == person_i:
                 c += params.cost_cant_be_on
 
             if person_j.isBuyingFor(person_i):
