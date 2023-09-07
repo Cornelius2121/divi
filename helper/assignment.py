@@ -56,6 +56,13 @@ class Person:
         return other.key() in self.already_on_this_keys
 
 
+    def __repr__(self) -> str:
+        out =  f"{self.getFullName()}"
+        if len(self.already_on_this_keys)>0:
+            out += f" is buying for " +", ".join(self.already_on_this_keys)
+        return out
+
+
 class AssignmentParams:
     def __init__(self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year) -> None:
         self.cost_cant_be_on = 10000
