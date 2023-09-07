@@ -83,6 +83,14 @@
 
         function createAllocation() {
             var allocation = [];
+            let people = [];
+            for (i = 1; i < table.rows.length; i++) {
+                var personA = table.rows[i].cells[0].innerHTML;
+                people.push(personA);
+            }
+            allocation.push({
+                "people": people
+            });
             var table = document.getElementById("rules");
             var i;
             var count = document.getElementById("number_to_buy").value;
