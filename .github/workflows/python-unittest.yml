@@ -40,7 +40,7 @@ jobs:
     - name: Get code coverage
       run: |
         pip install pytest pytest-cov
-        python -m pytest --cov=./myapp --cov-report xml
+        python -m pytest --cov=./divi tests --cov-report xml
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
