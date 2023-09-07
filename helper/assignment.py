@@ -2,7 +2,7 @@ import math
 from typing import List
 from __future__ import annotations
 import numpy as np
-import lapjv
+# import lapjv
 import datetime
 
 this_year = datetime.datetime.now().year
@@ -83,7 +83,7 @@ def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray
 
 def assignPeople(people: List[Person], params: AssignmentParams) ->  List[Person]:
     cost_matrix = formCostMatrix(people, params)
-
+    raise Exception("LAPJV is not installed")
     # Run Hungarian algorithm
     row_ind, col_ind, _ = lapjv.lapjv(cost_matrix)
     for row in row_ind:
