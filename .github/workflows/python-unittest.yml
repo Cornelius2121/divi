@@ -38,6 +38,7 @@ jobs:
       run: |
         pytest
     - name: Get code coverage
+      run: |
         pip install pytest pytest-cov
         python -m pytest --cov=./myapp --cov-report xml
     - name: Coveralls
