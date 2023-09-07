@@ -7,6 +7,16 @@ import scipy
 import datetime
 
 
+def list_of_names_to_string(names: List[str]) -> str:
+    nnames = len(names)
+    if nnames == 1:
+        return names[0]
+    elif nnames == 2:
+        return f"{names[0]} and {names[1]}"
+    elif nnames > 2:
+        return ", ".join(names[:-1]) + f", and {names[-1]}"
+
+
 class Person:
     def __init__(self, first_name: str, last_name: str) -> None:
         self.first_name = first_name
@@ -25,8 +35,6 @@ class Person:
 
     def addPersonThatCantBeOn(self, other: Person) -> None:
         self.keys_that_cant_be_on.append(other.key())
-
-
 
     def addPersonToBeOn(self, other: Person) -> None:
         assert other is not self, f"Expected {other.getFullName()} to not be {self.getFullName()}"
@@ -59,9 +67,12 @@ class Person:
         return other.key() in self.keys_that_cant_be_on
 
     def __repr__(self) -> str:
-        out =  f"{self.getFullName()}"
-        if len(self.already_on_this_keys)>0:
-            out += f" is buying for " +", ".join(self.already_on_this_keys)
+        out = f"{self.getFullName()}"
+        if len(self.already_on_this_keys) > 0:
+            names = list_of_names_to_string(self.already_on_this_keys)
+            out += f" is buying for " + names
+        else:
+            out += f" is not buying for anyone"
         return out
 
 
