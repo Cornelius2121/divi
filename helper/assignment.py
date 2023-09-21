@@ -80,7 +80,7 @@ class Person:
     def hasBoughtForPreviously(self, other: Person) -> bool:
         return other.key() in self.already_on_prev_keys
 
-    def yearsBoughtFor(self, other: Person) -> int:
+    def yearsBoughtFor(self, other: Person) -> List[int]:
         assert self.hasBoughtForPreviously(
             other
         ), f"Expected to have bought for {other.getFullName()} previously"
