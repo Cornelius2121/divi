@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import datetime
 import math
-from typing import List
+import os.path
+from typing import List, Tuple
 
 import numpy as np
 import scipy
+import pathlib as Path
+
+import yaml
 
 
 def join_string_with_commas(
@@ -183,5 +187,14 @@ def assignPeople(people: List[Person], params: AssignmentParams) -> List[Person]
     return people
 
 
-def saveAssignmentYaml(people: List[Person]) -> None:
-    pass
+def saveAssignmentYaml(people: List[Person], file_name: Path, year: int) -> None:
+    dict_out = dict()
+    npersons = len(people)
+    ndigits = int(math.log10(npersons)) + 1
+
+    for i, person in enumerate(people):
+        label = f"person_{i:{ndigits}}"
+        dict_out[label] = person.toDict()
+    dict_out["year"] = year
+    with open(file_name, "w") as f:
+        yaml.dump(dict_out, f)
