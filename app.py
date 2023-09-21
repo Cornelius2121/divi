@@ -23,7 +23,10 @@ def create():
     for rule in session['rules']:
         A = [p for p in people if p.getFullName() == rule['personA']][0]
         B = [p for p in people if p.getFullName() == rule['personB']][0]
-        A.addPersonHasBeenOn(B, int(rule['Year']))
+        if 'Year' not in rule:
+            A.addPersonThatCantBeOn(B)
+        else:
+            A.addPersonHasBeenOn(B, int(rule['Year']))
     x = assignPeople(people=people, params=params)
     x = [str(p) for p in x]
     session['assignments'] = x
