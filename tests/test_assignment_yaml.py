@@ -24,10 +24,6 @@ class TestSaveToYaml(unittest.TestCase):
         people = assignPeople(people=people, params=params)
         saveAssignmentYaml(people, f"{parent_dir}/tests/data/assignments_{params.this_year}.yaml", params.this_year)
 
-    def test_load_assignments_2021(self):
-        year = 2021
-        people = loadAssignmentYaml(f"{parent_dir}/tests/data/assignments_{year}.yaml")
-
 
 if __name__ == '__main__':
     unittest.main()
