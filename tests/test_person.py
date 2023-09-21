@@ -47,7 +47,7 @@ class TestToAndFromDict(TestCase):
         p.already_on_this_keys = ["d", "e", "f"]
         p.keys_that_cant_be_on = ["g", "h", "i"]
 
-        d = p.toDict()
+        d = p.toDict(only_save_this_year=False)
         self.assertEqual(d["first_name"], "Tim")
         self.assertEqual(d["last_name"], "Smith")
         self.assertEqual(d["already_on_prev_keys"], ["a", "b", "c"])
@@ -62,7 +62,7 @@ class TestToAndFromDict(TestCase):
         d["already_on_prev_year"] = [2020, 2021, 2022]
         d["already_on_this_keys"] = ["d", "e", "f"]
         d["keys_that_cant_be_on"] = ["g", "h", "i"]
-        person = Person.fromDict(d)
+        person = Person.fromDict(d, only_save_this_year=False)
         self.assertEqual(person.getFullName(), "Tim Smith")
         self.assertEqual(person.already_on_prev_keys, ["a", "b", "c"])
         self.assertEqual(person.already_on_prev_year, [2020, 2021, 2022])

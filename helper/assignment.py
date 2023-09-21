@@ -102,23 +102,26 @@ class Person:
             out += " is not buying for anyone"
         return out
 
-    def toDict(self) -> dict:
-        return {
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "keys_that_cant_be_on": self.keys_that_cant_be_on,
-            "already_on_this_keys": self.already_on_this_keys,
-            "already_on_prev_year": self.already_on_prev_year,
-            "already_on_prev_keys": self.already_on_prev_keys,
-        }
+    def toDict(self, only_save_this_year=True) -> dict:
+        d = dict()
+        d["first_name"] = self.first_name
+        d["last_name"] = self.last_name
+        d["already_on_this_keys"] = self.already_on_this_keys
+        if not only_save_this_year:
+            d["keys_that_cant_be_on"] = self.keys_that_cant_be_on
+            d["already_on_prev_year"] = self.already_on_prev_year
+            d["already_on_prev_keys"] = self.already_on_prev_keys
+
+        return d
 
     @staticmethod
-    def fromDict(data: dict) -> Person:
+    def fromDict(data: dict, only_save_this_year=True) -> Person:
         p = Person(data["first_name"], data["last_name"])
-        p.keys_that_cant_be_on = data["keys_that_cant_be_on"]
         p.already_on_this_keys = data["already_on_this_keys"]
-        p.already_on_prev_year = data["already_on_prev_year"]
-        p.already_on_prev_keys = data["already_on_prev_keys"]
+        if not only_save_this_year:
+            p.keys_that_cant_be_on = data["keys_that_cant_be_on"]
+            p.already_on_prev_year = data["already_on_prev_year"]
+            p.already_on_prev_keys = data["already_on_prev_keys"]
         return p
 
     def __str__(self):
