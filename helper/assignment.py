@@ -199,16 +199,48 @@ def saveAssignmentYaml(people: List[Person], file_name: Path, year: int) -> None
         yaml.dump(dict_out, f)
 
 
-def loadAssignmentYaml(file_name: Path) -> Tuple[List[Person], int]:
-    if not os.path.isfile(file_name):
-        raise ValueError(f"Expected {file_name} to exist!")
-    with open(file_name, "r") as f:
-        dict_in = yaml.load(f, Loader=yaml.FullLoader)
-        people = []
-        year = None
-        for key, data in dict_in.items():
-            if key == "year":
-                year = data
-            else:
-                people.append(Person.fromDict(data))
-        return people, year
+
+def loadAssignmentYamls(file_names: List[Path]) -> List[Person]:
+    if not isinstance(file_names, list):
+        raise ValueError(f"Expected file_names to be a list, got {type(file_names)}")
+    people = []
+    for file_name in file_names:
+        if not os.path.isfile(file_name):
+            raise ValueError(f"Expected {file_name} to exist!")
+
+    # Get names of all people in all files
+    for file_name in file_names:
+        with open(file_name, "r") as f:
+            dict_in = yaml.load(f, Loader=yaml.FullLoader)
+            for key, data in dict_in.items():
+                if key != "year":
+                    person = Person.fromDict(data)
+                    people.append(person)
+
+    # Merge duplicates
+    keys = [p.key() for p in people]
+    unique_keys = list(set(keys))
+    unique_people = []
+    for key in unique_keys:
+        people_with_key = [p for p in people if p.key() == key]
+        assert len(people_with_key) > 0, f"Expected to find people with key {key}"
+        if len(people_with_key) > 1:
+            print(f"Found duplicate people with key {key}")
+            people_with_key = [people_with_key[0]]
+        unique_people.append(people_with_key[0])
+
+    for file_name in file_names:
+        with open(file_name, "r") as f:
+            dict_in = yaml.load(f, Loader=yaml.FullLoader)
+            year = dict_in["year"]
+            for key, data in dict_in.items():
+                if key != "year":
+                    temp_person = Person.fromDict(data)
+                    person = [p for p in unique_people if p.key() == temp_person.key()][0]
+                    if "already_on_this_keys" in data:
+                        for key in data["already_on_this_keys"]:
+                            person.addPersonHasBeenOn(
+                                [p for p in unique_people if p.key() == key][0], year
+                            )
+    return unique_people
+
