@@ -10,9 +10,11 @@ app.secret_key = 'any random string'
 def hello_world():  # put application's code here
     return render_template('index.html')
 
+
 @app.route('/allocation', methods=['GET'])
 def allocation():
     return render_template('allocation.html', assignments=session['assignments'])
+
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -35,7 +37,3 @@ def create():
     }), 200)
     response.headers["Content-Type"] = "application/json"
     return response
-
-
-if __name__ == '__main__':
-    app.run(port=8000)
