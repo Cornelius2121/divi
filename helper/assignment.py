@@ -8,7 +8,9 @@ import numpy as np
 import scipy
 
 
-def join_string_with_commas(strings: List[str], joiner="and", oxford_comma=False) -> str:
+def join_string_with_commas(
+    strings: List[str], joiner="and", oxford_comma=False
+) -> str:
     str_out = strings[0]
     if len(strings) > 2:
         str_out = ", ".join(strings[0:-1])
@@ -21,8 +23,21 @@ def join_string_with_commas(strings: List[str], joiner="and", oxford_comma=False
 
 class Person:
     def __init__(self, first_name: str, last_name: str = "") -> None:
-        self.first_name = first_name
-        self.last_name = last_name
+        first_name = first_name.strip()
+        last_name = last_name.strip()
+        names = first_name.split(" ")
+        if len(names) == 1:
+            self.first_name = first_name
+            self.last_name = last_name
+        elif len(names) == 2:
+            if len(last_name) > 0:
+                raise ValueError(
+                    "Expected last_name to empty when first name has two names!"
+                )
+            self.first_name = names[0]
+            self.last_name = names[1]
+        else:
+            raise ValueError("Expected first_name argument to have one or two names!")
 
         self.keys_that_cant_be_on = []
         self.already_on_this_keys = []
@@ -39,22 +54,34 @@ class Person:
         self.keys_that_cant_be_on.append(other.key())
 
     def addPersonToBeOn(self, other: Person) -> None:
-        assert other is not self, f"Expected {other.getFullName()} to not be {self.getFullName()}"
+        assert (
+            other is not self
+        ), f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_this_keys.append(other.key())
 
     def addPersonHasBeenOn(self, other: Person, year: int) -> None:
-        assert other is not self, f"Expected {other.getFullName()} to not be {self.getFullName()}"
+        assert (
+            other is not self
+        ), f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_prev_keys.append(other.key())
         self.already_on_prev_year.append(year)
 
     def getFullName(self) -> str:
         return f"{self.first_name} {self.last_name}".strip()
 
+    def getFirstName(self) -> str:
+        return self.first_name
+
+    def getLastName(self) -> str:
+        return self.last_name
+
     def hasBoughtForPreviously(self, other: Person) -> bool:
         return other.key() in self.already_on_prev_keys
 
     def yearsBoughtFor(self, other: Person) -> int:
-        assert self.hasBoughtForPreviously(other), f"Expected to have bought for {other.getFullName()} previously"
+        assert self.hasBoughtForPreviously(
+            other
+        ), f"Expected to have bought for {other.getFullName()} previously"
         years = []
         for i in range(len(self.already_on_prev_keys)):
             if self.already_on_prev_keys[i] == other.key():
