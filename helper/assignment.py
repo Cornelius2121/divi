@@ -50,7 +50,7 @@ class Person:
         return self.key() == other.key()
 
     def key(self) -> str:
-        return self.getFullName().replace(" ", "_")
+        return self.getFullName()
 
     def addPersonThatCantBeOn(self, other: Person) -> None:
         self.keys_that_cant_be_on.append(other.key())
