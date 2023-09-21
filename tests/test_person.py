@@ -14,8 +14,19 @@ class TestFullName(TestCase):
         self.assertEqual(p.getFirstName(), "Tim")
         self.assertEqual(p.getLastName(), "")
 
+    def test_when_initialised_with_no_last_name_and_trailing_spaces(self):
+        p = Person("  Tim  ")
+        self.assertEqual(p.getFullName(), "Tim")
+        self.assertEqual(p.getFirstName(), "Tim")
+        self.assertEqual(p.getLastName(), "")
+
     def test_when_initialised_with_last_name(self):
         p = Person("Tim", "Smith")
+        self.assertEqual(p.getFullName(), "Tim Smith")
+        self.assertEqual(p.getFirstName(), "Tim")
+        self.assertEqual(p.getLastName(), "Smith")
+    def test_when_initialised_with_last_name_and_trailing_spaces(self):
+        p = Person(" Tim  ", "  Smith ")
         self.assertEqual(p.getFullName(), "Tim Smith")
         self.assertEqual(p.getFirstName(), "Tim")
         self.assertEqual(p.getLastName(), "Smith")
