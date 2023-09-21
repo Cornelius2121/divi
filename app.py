@@ -5,9 +5,6 @@ from helper.assignment import assignPeople, Person, AssignmentParams
 app = Flask(__name__)
 
 
-# app.secret_key = 'any random string'
-
-
 @app.route('/')
 def hello_world():  # put application's code here
     return render_template('index.html')
@@ -40,6 +37,6 @@ def create():
     response.headers["Content-Type"] = "application/json"
     return response
 
-
+# Application start
 if __name__ == '__main__':
     app.run(port=8000, debug=False)
