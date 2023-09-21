@@ -3,7 +3,7 @@ import sys
 from helper.assignment import assignPeople, Person, AssignmentParams
 
 app = Flask(__name__)
-app.secret_key = 'any random string'
+# app.secret_key = 'any random string'
 
 
 @app.route('/')
