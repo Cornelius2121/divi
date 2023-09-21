@@ -3,6 +3,8 @@ import sys
 from helper.assignment import assignPeople, Person, AssignmentParams
 
 app = Flask(__name__)
+
+
 # app.secret_key = 'any random string'
 
 
@@ -37,3 +39,7 @@ def create():
     }), 200)
     response.headers["Content-Type"] = "application/json"
     return response
+
+
+if __name__ == '__main__':
+    app.run(port=8000, debug=False)
