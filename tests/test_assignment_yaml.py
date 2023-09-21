@@ -3,7 +3,7 @@ import os, sys
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-from helper.assignment import AssignmentParams, Person, assignPeople, saveAssignmentYaml
+from helper.assignment import AssignmentParams, Person, assignPeople, saveAssignmentYaml, loadAssignmentYaml
 
 
 class TestSaveToYaml(unittest.TestCase):
@@ -23,6 +23,10 @@ class TestSaveToYaml(unittest.TestCase):
 
         people = assignPeople(people=people, params=params)
         saveAssignmentYaml(people, f"{parent_dir}/tests/data/assignments_{params.this_year}.yaml", params.this_year)
+
+    def test_load_assignments_2021(self):
+        year = 2021
+        people = loadAssignmentYaml(f"{parent_dir}/tests/data/assignments_{year}.yaml")
 
 
 if __name__ == '__main__':

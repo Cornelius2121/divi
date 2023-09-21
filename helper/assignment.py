@@ -198,3 +198,18 @@ def saveAssignmentYaml(people: List[Person], file_name: Path, year: int) -> None
     dict_out["year"] = year
     with open(file_name, "w") as f:
         yaml.dump(dict_out, f)
+
+
+def loadAssignmentYaml(file_name: Path) -> Tuple[List[Person], int]:
+    if not os.path.isfile(file_name):
+        raise ValueError(f"Expected {file_name} to exist!")
+    with open(file_name, "r") as f:
+        dict_in = yaml.load(f, Loader=yaml.FullLoader)
+        people = []
+        year = None
+        for key, data in dict_in.items():
+            if key == "year":
+                year = data
+            else:
+                people.append(Person.fromDict(data))
+        return people, year
