@@ -39,6 +39,30 @@ class TestFullName(TestCase):
         self.assertEqual(p.getLastName(), "Smith")
 
 
+class TestRepresentation(TestCase):
+    def test_when_initialised_with_no_assignment(self):
+        p = Person("Tim")
+        self.assertEqual(str(p), "Tim is not buying for anyone")
+
+    def test_when_initialised_with_assignment(self):
+        p = Person("Tim")
+        p.addPersonToBeOn(Person("Jon"))
+        self.assertEqual(str(p), "Tim is buying for Jon")
+
+    def test_when_initialised_with_two_assignments(self):
+        p = Person("Tim")
+        p.addPersonToBeOn(Person("Jon"))
+        p.addPersonToBeOn(Person("Macy"))
+        self.assertEqual(str(p), "Tim is buying for Jon and Macy")
+
+    def test_when_initialised_with_three_assignments(self):
+        p = Person("Tim")
+        p.addPersonToBeOn(Person("Jon"))
+        p.addPersonToBeOn(Person("Macy"))
+        p.addPersonToBeOn(Person("Jarvis"))
+        self.assertEqual(str(p), "Tim is buying for Jon, Macy and Jarvis")
+
+
 class TestToAndFromDict(TestCase):
     def test_when_writing_to_dict(self):
         p = Person("Tim", "Smith")
