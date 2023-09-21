@@ -9,7 +9,7 @@ import scipy
 
 
 def join_string_with_commas(
-    strings: List[str], joiner="and", oxford_comma=False
+        strings: List[str], joiner="and", oxford_comma=False
 ) -> str:
     str_out = strings[0]
     if len(strings) > 2:
@@ -31,9 +31,7 @@ class Person:
             self.last_name = last_name
         elif len(names) == 2:
             if len(last_name) > 0:
-                raise ValueError(
-                    "Expected last_name to empty when first name has two names!"
-                )
+                raise ValueError("Expected last_name to empty when first name has two names!")
             self.first_name = names[0]
             self.last_name = names[1]
         else:
@@ -55,13 +53,13 @@ class Person:
 
     def addPersonToBeOn(self, other: Person) -> None:
         assert (
-            other is not self
+                other is not self
         ), f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_this_keys.append(other.key())
 
     def addPersonHasBeenOn(self, other: Person, year: int) -> None:
         assert (
-            other is not self
+                other is not self
         ), f"Expected {other.getFullName()} to not be {self.getFullName()}"
         self.already_on_prev_keys.append(other.key())
         self.already_on_prev_year.append(year)
@@ -129,7 +127,7 @@ class Person:
 
 class AssignmentParams:
     def __init__(
-        self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year
+            self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year
     ) -> None:
         self.cost_cant_be_on = 10000
         self.cost_of_assignment = 1
@@ -139,7 +137,7 @@ class AssignmentParams:
 
     def costForYearAssignment(self, year_previous: int) -> float:
         assert (
-            year_previous < self.this_year
+                year_previous < self.this_year
         ), f"Expected year_previous ({year_previous}) to be less than this year ({self.this_year})"
         delta = self.this_year - year_previous
         return self.cost_of_double_assignment * math.exp(
