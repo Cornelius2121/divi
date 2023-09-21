@@ -119,13 +119,12 @@ class Person:
         return d
 
     @staticmethod
-    def fromDict(data: dict, only_save_this_year=True) -> Person:
+    def fromDict(data: dict, additional_keys_to_assign: List[str] = None) -> Person:
         p = Person(data["first_name"], data["last_name"])
-        p.already_on_this_keys = data["already_on_this_keys"]
-        if not only_save_this_year:
-            p.keys_that_cant_be_on = data["keys_that_cant_be_on"]
-            p.already_on_prev_year = data["already_on_prev_year"]
-            p.already_on_prev_keys = data["already_on_prev_keys"]
+        if additional_keys_to_assign is not None:
+            for key in additional_keys_to_assign:
+                if key in data:
+                    setattr(p, key, data[key])
         return p
 
     def __str__(self):

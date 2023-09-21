@@ -62,7 +62,7 @@ class TestToAndFromDict(TestCase):
         d["already_on_prev_year"] = [2020, 2021, 2022]
         d["already_on_this_keys"] = ["d", "e", "f"]
         d["keys_that_cant_be_on"] = ["g", "h", "i"]
-        person = Person.fromDict(d, only_save_this_year=False)
+        person = Person.fromDict(d, additional_keys_to_assign=["already_on_prev_keys", "already_on_prev_year", "keys_that_cant_be_on", "already_on_this_keys"])
         self.assertEqual(person.getFullName(), "Tim Smith")
         self.assertEqual(person.already_on_prev_keys, ["a", "b", "c"])
         self.assertEqual(person.already_on_prev_year, [2020, 2021, 2022])
