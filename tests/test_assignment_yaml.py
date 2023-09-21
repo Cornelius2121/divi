@@ -105,7 +105,7 @@ class TestSaveToYaml(unittest.TestCase):
         self.assertEqual(len(person_cornelius_spence), 1, "Expected to find one person with name Cornelius Spence")
         person_cornelius_spence = person_cornelius_spence[0]
         self.assertEqual(len(person_cornelius_spence.already_on_prev_keys), 2,
-                            "Expected Cornelius Spence to have bought for two people previously")
+                         "Expected Cornelius Spence to have bought for two people previously")
         hasBoughtForTim = "Tim Smith" in person_cornelius_spence.already_on_prev_keys
         self.assertTrue(hasBoughtForTim,
                         f"Expected Cornelius Spence to have bought for Tim Smith, but has bought for {join_string_with_commas(person_cornelius_spence.already_on_prev_keys)}")
@@ -118,14 +118,14 @@ class TestSaveToYaml(unittest.TestCase):
         self.assertEqual(len(person_macy_spence), 1, "Expected to find one person with name Macy Spence")
         person_macy_spence = person_macy_spence[0]
         self.assertEqual(len(person_macy_spence.already_on_prev_keys), 2,
-                            "Expected Macy Spence to have bought for two people previously")
+                         "Expected Macy Spence to have bought for two people previously")
         hasBoughtForJon = "Jon Scott" in person_macy_spence.already_on_prev_keys
         self.assertTrue(hasBoughtForJon,
                         f"Expected Macy Spence to have bought for Jon Scott, but has bought for {join_string_with_commas(person_macy_spence.already_on_prev_keys)}")
         hasBoughtForCorny = "Cornelius Spence" in person_macy_spence.already_on_prev_keys
         self.assertTrue(hasBoughtForCorny,
                         f"Expected Macy Spence to have bought for Cornelius Spence, but has bought for {join_string_with_commas(person_macy_spence.already_on_prev_keys)}")
-        
+
 
 if __name__ == '__main__':
     unittest.main()
