@@ -20,7 +20,7 @@ def join_string_with_commas(strings: List[str], joiner="and", oxford_comma=False
 
 
 class Person:
-    def __init__(self, first_name: str, last_name: str) -> None:
+    def __init__(self, first_name: str, last_name: str = "") -> None:
         self.first_name = first_name
         self.last_name = last_name
 
