@@ -53,11 +53,24 @@
             document.getElementById("frm1").reset();
             ``
         }
+        function addYear() {
+            var x = document.getElementById("frm4");
+            var yearInput = x.elements[0].value;
+            // Add the data as rule options
+            var year = document.getElementById("year");
+            var opt = document.createElement('option');
+            opt.value = yearInput;
+            opt.innerHTML = yearInput;
+            year.appendChild(opt);
+            // Reset the form
+            document.getElementById("frm4").reset();
+        }
 
         function addRule() {
             var x = document.getElementById("frm3");
             var personA = x.elements[0].value;
             var personB = x.elements[1].value;
+            var year = x.elements[2].value;
             if (personB === personA) {
                 alert("You can't buy for yourself!");
                 // Reset the form
@@ -76,6 +89,8 @@
             c1.innerText = personA;
             let c2 = row.insertCell(1);
             c2.innerText = personB;
+            let c3 = row.insertCell(2);
+            c3.innerText = year;
 
             // Reset the form
             document.getElementById("frm3").reset();
@@ -102,9 +117,11 @@
             for (i = 1; i < table.rows.length; i++) {
                 var personA = table.rows[i].cells[0].innerHTML;
                 var personB = table.rows[i].cells[1].innerHTML;
+                var year = table.rows[i].cells[2].innerHTML;
                 rules.push({
                     "personA": personA,
-                    "personB": personB
+                    "personB": personB,
+                    "Year": year
                 });
             }
             allocation.push({
@@ -141,6 +158,12 @@
         <th>Name</th>
     </tr>
 </table>
+<form id="frm4">
+    <p>Add a year that has previously had gift purchases!</p>
+    <label for="year_input">Year: </label>
+    <input type="text" id="year_input" name="year_input">
+</form>
+<button onclick="addYear()">Add new year!</button>
 <form id="frm3">
     <p>Add a rule in the format Person A bought for Person B!</p>
     <label for="buyer">Person A: </label>
@@ -151,12 +174,17 @@
     <select id="buyee" name="buyee">
         <option value="">--Please choose an option--</option>
     </select>
+    <label for="year">Year: </label>
+    <select id="year" name="year">
+        <option value="">--Please choose an option--</option>
+    </select>
 </form>
 <button onclick="addRule()">Add a new rule!</button>
 <table id="rules">
     <tr>
         <th>Person A</th>
         <th>Person B</th>
+        <th>Year</th>
     </tr>
 </table>
 
