@@ -106,28 +106,31 @@ class Person:
 
     def toDict(self) -> dict:
         return {
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'keys_that_cant_be_on': self.keys_that_cant_be_on,
-            'already_on_this_keys': self.already_on_this_keys,
-            'already_on_prev_year': self.already_on_prev_year,
-            'already_on_prev_keys': self.already_on_prev_keys
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "keys_that_cant_be_on": self.keys_that_cant_be_on,
+            "already_on_this_keys": self.already_on_this_keys,
+            "already_on_prev_year": self.already_on_prev_year,
+            "already_on_prev_keys": self.already_on_prev_keys,
         }
-    
+
     @staticmethod
     def fromDict(data: dict) -> Person:
-        p = Person(data['first_name'], data['last_name'])
-        p.keys_that_cant_be_on = data['keys_that_cant_be_on']
-        p.already_on_this_keys = data['already_on_this_keys']
-        p.already_on_prev_year = data['already_on_prev_year']
-        p.already_on_prev_keys = data['already_on_prev_keys']
+        p = Person(data["first_name"], data["last_name"])
+        p.keys_that_cant_be_on = data["keys_that_cant_be_on"]
+        p.already_on_this_keys = data["already_on_this_keys"]
+        p.already_on_prev_year = data["already_on_prev_year"]
+        p.already_on_prev_keys = data["already_on_prev_keys"]
         return p
+
     def __str__(self):
         return self.__repr__()
 
 
 class AssignmentParams:
-    def __init__(self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year) -> None:
+    def __init__(
+        self, years_of_not_repeating: int, this_year: int = datetime.datetime.now().year
+    ) -> None:
         self.cost_cant_be_on = 10000
         self.cost_of_assignment = 1
         self.cost_of_double_assignment = 100
@@ -135,9 +138,13 @@ class AssignmentParams:
         self.this_year = this_year
 
     def costForYearAssignment(self, year_previous: int) -> float:
-        assert year_previous < self.this_year, f"Expected year_previous ({year_previous}) to be less than this year ({self.this_year})"
+        assert (
+            year_previous < self.this_year
+        ), f"Expected year_previous ({year_previous}) to be less than this year ({self.this_year})"
         delta = self.this_year - year_previous
-        return self.cost_of_double_assignment * math.exp(- delta / self.years_of_not_repeating)
+        return self.cost_of_double_assignment * math.exp(
+            -delta / self.years_of_not_repeating
+        )
 
 
 def formCostMatrix(people: List[Person], params: AssignmentParams) -> np.ndarray:
@@ -173,3 +180,7 @@ def assignPeople(people: List[Person], params: AssignmentParams) -> List[Person]
         person = people[row]
         person.addPersonToBeOn(people[col])
     return people
+
+
+def saveAssignmentYaml(people: List[Person]) -> None:
+    pass
