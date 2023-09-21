@@ -2,3 +2,5 @@ flask
 numpy
 scipy
 PyYaml
+coverage
+Flask-Testing

@@ -18,129 +18,7 @@
             font-family: 'Rubik', sans-serif;
         }
     </style>
-    <script type="text/javascript">
-        function getAddedNameValue() {
-            var x = document.getElementById("frm1");
-            var text = "";
-            var i;
-            for (i = 0; i < x.length; i++) {
-                text += x.elements[i].value;
-            }
-            // Get the table element in which you want to add row
-            let table = document.getElementById("names");
-
-            // Create a row using the inserRow() method and
-            // specify the index where you want to add the row
-            let row = table.insertRow(-1); // We are adding at the end
-
-            // Create table cells
-            let c1 = row.insertCell(0);
-            c1.innerText = text;
-
-            // Add the data as rule options
-            var buyer = document.getElementById("buyer");
-            var buyee = document.getElementById("buyee");
-            var opt = document.createElement('option');
-            opt.value = text;
-            opt.innerHTML = text;
-            buyer.appendChild(opt);
-            var opt = document.createElement('option');
-            opt.value = text;
-            opt.innerHTML = text;
-            buyee.appendChild(opt);
-
-            // Reset the form
-            document.getElementById("frm1").reset();
-            ``
-        }
-        function addYear() {
-            var x = document.getElementById("frm4");
-            var yearInput = x.elements[0].value;
-            // Add the data as rule options
-            var year = document.getElementById("year");
-            var opt = document.createElement('option');
-            opt.value = yearInput;
-            opt.innerHTML = yearInput;
-            year.appendChild(opt);
-            // Reset the form
-            document.getElementById("frm4").reset();
-        }
-
-        function addRule() {
-            var x = document.getElementById("frm3");
-            var personA = x.elements[0].value;
-            var personB = x.elements[1].value;
-            var year = x.elements[2].value;
-            if (personB === personA) {
-                alert("You can't buy for yourself!");
-                // Reset the form
-                document.getElementById("frm3").reset();
-                return;
-            }
-            // Get the table element in which you want to add row
-            let table = document.getElementById("rules");
-
-            // Create a row using the inserRow() method and
-            // specify the index where you want to add the row
-            let row = table.insertRow(-1); // We are adding at the end
-
-            // Create table cells
-            let c1 = row.insertCell(0);
-            c1.innerText = personA;
-            let c2 = row.insertCell(1);
-            c2.innerText = personB;
-            let c3 = row.insertCell(2);
-            c3.innerText = year;
-
-            // Reset the form
-            document.getElementById("frm3").reset();
-        }
-
-        function createAllocation() {
-            var allocation = [];
-            let people = [];
-            var table = document.getElementById("names");
-            for (i = 1; i < table.rows.length; i++) {
-                var personA = table.rows[i].cells[0].innerHTML;
-                people.push(personA);
-            }
-            allocation.push({
-                "people": people
-            });
-            var table = document.getElementById("rules");
-            var i;
-            var count = document.getElementById("number_to_buy").value;
-            allocation.push({
-                "count": count
-            });
-            let rules = [];
-            for (i = 1; i < table.rows.length; i++) {
-                var personA = table.rows[i].cells[0].innerHTML;
-                var personB = table.rows[i].cells[1].innerHTML;
-                var year = table.rows[i].cells[2].innerHTML;
-                rules.push({
-                    "personA": personA,
-                    "personB": personB,
-                    "Year": year
-                });
-            }
-            allocation.push({
-                "rules": rules
-            });
-            $.ajax({
-                type: "POST",
-                url: '/create',
-                async: false,
-                data: JSON.stringify(allocation),
-                contentType: "application/json",
-                success: function (data) {
-                    window.location.href = "/allocation";
-                }, fail: function () {
-
-                }
-            })
-        }
-    </script>
+    <script src="../static/submitRules.js"></script>
 </head>
 <body>
 <h1 style="text-align: center">Divi</h1>
@@ -158,6 +36,27 @@
         <th>Name</th>
     </tr>
 </table>
+<form id="frm5">
+    <p>Add a rule in the format Person A bought for Person B Forever!</p>
+    <label for="buyer_forever">Person A: </label>
+    <select id="buyer_forever" name="buyer_forever">
+        <option value="">--Please choose an option--</option>
+    </select>
+    <label for="buyee_forever">Person B: </label>
+    <select id="buyee_forever" name="buyee_forever">
+        <option value="">--Please choose an option--</option>
+    </select>
+    <label for="reverse"> Do you want to apply the reverse as well?</label>
+    <input type="checkbox" id="reverse" name="reverse" value="Reverse">
+
+</form>
+<button onclick="addForeverRule()">Add a new rule forever!</button>
+<table id="forever_rules">
+    <tr>
+        <th>Person A</th>
+        <th>Person B</th>
+    </tr>
+</table>
 <form id="frm4">
     <p>Add a year that has previously had gift purchases!</p>
     <label for="year_input">Year: </label>
@@ -165,7 +64,7 @@
 </form>
 <button onclick="addYear()">Add new year!</button>
 <form id="frm3">
-    <p>Add a rule in the format Person A bought for Person B!</p>
+    <p>Add a rule in the format Person A bought for Person B in Year C!</p>
     <label for="buyer">Person A: </label>
     <select id="buyer" name="buyer">
         <option value="">--Please choose an option--</option>
