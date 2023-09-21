@@ -48,7 +48,7 @@ class Person:
         self.already_on_prev_year.append(year)
 
     def getFullName(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}".strip()
 
     def hasBoughtForPreviously(self, other: Person) -> bool:
         return other.key() in self.already_on_prev_keys
@@ -95,6 +95,8 @@ class Person:
         p.already_on_prev_year = data['already_on_prev_year']
         p.already_on_prev_keys = data['already_on_prev_keys']
         return p
+    def __str__(self):
+        return self.__repr__()
 
 
 class AssignmentParams:

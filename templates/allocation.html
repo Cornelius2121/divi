@@ -5,17 +5,15 @@
     <title>Your Allocation</title>
 </head>
 <body>
-    <table>
+<table>
+    <tr>
+        <th>Purchases</th>
+    </tr>
+    {% for i in assignments %}
         <tr>
-            <th>Person A</th>
-            <th>Person B</th>
+            <td>{{ i }}</td>
         </tr>
-        {% for i in allocations %}
-        <tr>
-            <td>{{ i[0] }}</td>
-            <td>{{ i[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
+</table>
 </body>
 </html>
