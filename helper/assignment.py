@@ -1,20 +1,22 @@
 from __future__ import annotations
 
+import datetime
 import math
 from typing import List
+
 import numpy as np
 import scipy
-import datetime
 
 
-def list_of_names_to_string(names: List[str]) -> str:
-    nnames = len(names)
-    if nnames == 1:
-        return names[0]
-    elif nnames == 2:
-        return f"{names[0]} and {names[1]}"
-    elif nnames > 2:
-        return ", ".join(names[:-1]) + f", and {names[-1]}"
+def join_string_with_commas(strings: List[str], joiner="and", oxford_comma=False) -> str:
+    str_out = strings[0]
+    if len(strings) > 2:
+        str_out = ", ".join(strings[0:-1])
+        if oxford_comma:
+            str_out += ","
+    if len(strings) > 1:
+        str_out += f" {joiner} " + strings[-1]
+    return str_out
 
 
 class Person:
@@ -69,10 +71,10 @@ class Person:
     def __repr__(self) -> str:
         out = f"{self.getFullName()}"
         if len(self.already_on_this_keys) > 0:
-            names = list_of_names_to_string(self.already_on_this_keys)
-            out += f" is buying for " + names
+            names = join_string_with_commas(self.already_on_this_keys)
+            out += f" is buying for {names}"
         else:
-            out += f" is not buying for anyone"
+            out += " is not buying for anyone"
         return out
 
     def __str__(self):
